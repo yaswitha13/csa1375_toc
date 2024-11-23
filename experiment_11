@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_STATES 10
+
+// Structure to represent an NFA
+typedef struct {
+    int transitions[MAX_STATES][MAX_STATES]; // Adjacency matrix for e-transitions
+    int num_states;                         // Number of states
+} NFA;
+
+// Function to calculate e-closure for a given state
+void epsilonClosure(NFA *nfa, int state, int *closure, int *visited) {
+    visited[state] = 1; // Mark the state as visited
+    closure[state] = 1; // Include the state in the closure
+
+    // Explore e-transitions from the current state
+    for (int i = 0; i < nfa->num_states; i++) {
+        if (nfa->transitions[state][i] && !visited[i]) {
+            epsilonClosure(nfa, i, closure, visited);
+        }
+    }
+}
+
+// Function to compute e-closure for all states
+void computeEpsilonClosures(NFA *nfa) {
+    for (int state = 0; state < nfa->num_states; state++) {
+        int closure[MAX_STATES] = {0}; // Stores the e-closure for the state
+        int visited[MAX_STATES] = {0}; // Tracks visited states
+
+        // Compute e-closure for the current state
+        epsilonClosure(nfa, state, closure, visited);
+
+        // Print the e-closure for the state
+        printf("e-closure(%d): {", state);
+        for (int i = 0; i < nfa->num_states; i++) {
+            if (closure[i])
+                printf("%d ", i);
+        }
+        printf("}\n");
+    }
+}
+
+int main() {
+    NFA nfa;
+    int num_transitions;
+
+    // Input the number of states
+    printf("Enter the number of states: ");
+    scanf("%d", &nfa.num_states);
+
+    // Initialize the transition matrix
+    for (int i = 0; i < nfa.num_states; i++) {
+        for (int j = 0; j < nfa.num_states; j++) {
+            nfa.transitions[i][j] = 0;
+        }
+    }
+
+    // Input the e-transitions
+    printf("Enter the number of e-transitions: ");
+    scanf("%d", &num_transitions);
+
+    printf("Enter the e-transitions as pairs (state1 state2):\n");
+    for (int i = 0; i < num_transitions; i++) {
+        int from, to;
+        scanf("%d %d", &from, &to);
+        nfa.transitions[from][to] = 1; // Add e-transition
+    }
+
+    // Compute and print e-closures for all states
+    computeEpsilonClosures(&nfa);
+
+    return 0;
+}
