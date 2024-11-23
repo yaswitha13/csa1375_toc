@@ -1,0 +1,45 @@
+
+#include <stdio.h>
+#include <string.h>
+
+// Function to simulate the NFA
+int simulateNFA(char *input) {
+    int len = strlen(input);
+
+    // String must be at least two characters long to start with 'b' and end with 'a'
+    if (len < 2)
+        return 0;
+
+    // NFA transitions:
+    // State 0: Initial state
+    // State 1: After reading 'b' at the start
+    // State 2: After reading 'a' at the end (accepting state)
+    
+    // Check if the string starts with 'b' and ends with 'a'
+    if (input[0] == 'b' && input[len - 1] == 'a') {
+        // Traverse the string (middle part can be any combination of 'a' and 'b')
+        for (int i = 1; i < len - 1; i++) {
+            // NFA can transition freely between states for any 'a' or 'b' in the middle
+            if (input[i] != 'a' && input[i] != 'b') {
+                return 0; // Invalid character found
+            }
+        }
+        return 1; // Accepted
+    }
+
+    return 0; // Rejected
+}
+
+int main() {
+    char input[100];
+
+    printf("Enter a string: ");
+    scanf("%s", input);
+
+    if (simulateNFA(input))
+        printf("The string is accepted by the NFA.\n");
+    else
+        printf("The string is rejected by the NFA.\n");
+
+    return 0;
+}
