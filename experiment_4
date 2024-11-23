@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <string.h>
+
+// Function to check if a string is a palindrome
+int isPalindrome(char *str, int start, int end) {
+    while (start < end) {
+        if (str[start] != str[end])
+            return 0; // Not a palindrome
+        start++;
+        end--;
+    }
+    return 1; // Palindrome
+}
+
+// Function to check if the string belongs to the CFG
+int belongsToCFG(char *input) {
+    int len = strlen(input);
+
+    // A string is valid if it's a palindrome
+    return isPalindrome(input, 0, len - 1);
+}
+
+int main() {
+    char input[100];
+
+    printf("Enter a binary string: ");
+    scanf("%s", input);
+
+    if (belongsToCFG(input))
+        printf("The string belongs to the language defined by the CFG.\n");
+    else
+        printf("The string does not belong to the language defined by the CFG.\n");
+
+    return 0;
+}
