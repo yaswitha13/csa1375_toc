@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <string.h>
+int simulateDFA(char *input) {
+int state = 0;
+for (int i = 0; input[i] != '\0'; i++) {
+char symbol = input[i];
+switch (state) {
+case 0: 
+if (symbol == 'a')
+state = 1;
+else
+return 0;
+break;
+case 1: 
+if (symbol == 'a')
+state = 3; 
+else if (symbol == 'b')
+state = 2;
+break;
+case 2: 
+if (symbol == 'a')
+state = 3; 
+break;
+case 3: 
+if (symbol == 'b')
+state = 2; 
+break;
+default:
+return 0; 
+}
+}
+return state == 3;
+}
+int main() {
+char input[100];
+printf("Enter a string of 'a' and 'b': ");
+scanf("%s", input);
+if (simulateDFA(input))
+printf("The string is accepted by the DFA.\n");
+else
+printf("The string is rejected by the DFA.\n");
+return 0;
+}
