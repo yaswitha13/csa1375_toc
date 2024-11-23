@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <string.h>
+
+// Function to check if a string belongs to the CFG
+int belongsToCFG(char *input) {
+    int len = strlen(input);
+
+    // Check each character in the string
+    for (int i = 0; i < len; i++) {
+        if (input[i] != 'a')
+            return 0; // Invalid character found
+    }
+
+    // If all characters are 'a', or the string is empty, it's valid
+    return 1;
+}
+
+int main() {
+    char input[100];
+
+    printf("Enter a string: ");
+    scanf("%s", input);
+
+    if (belongsToCFG(input))
+        printf("The string belongs to the language defined by the CFG.\n");
+    else
+        printf("The string does not belong to the language defined by the CFG.\n");
+
+    return 0;
+}
